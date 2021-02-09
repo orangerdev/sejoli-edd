@@ -113,7 +113,7 @@ class Sejoli_EDD {
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-sejoli-edd-admin.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-sejoli-edd-product.php';
 
 		$this->loader = new Sejoli_EDD_Loader();
 
@@ -145,7 +145,9 @@ class Sejoli_EDD {
 	 */
 	private function define_admin_hooks() {
 
-		$admin = new Sejoli_EDD\Admin( $this->get_plugin_name(), $this->get_version() );
+		$product = new Sejoli_EDD\Admin\Product( $this->get_plugin_name(), $this->get_version() );
+
+		$this->loader->add_action( 'sejoli/product/fields',		$product, 'set_product_fields', 12);
 
 	}
 
