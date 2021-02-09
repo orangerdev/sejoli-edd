@@ -89,7 +89,7 @@ class Product {
 
     /**
 	 * Setup product meta data
-	 * Hooked via filter sejoli/product/meta-data, filter 100
+	 * Hooked via filter sejoli/product/meta-data, filter 1222
 	 * @since  1.0.0
 	 * @param  WP_Post $product
 	 * @param  int     $product_id
@@ -97,14 +97,14 @@ class Product {
 	 */
     public function set_product_metadata(\WP_Post $product, int $product_id) {
 
-        $courses = carbon_get_post_meta($product_id, 'learnpress_course');
+        $edd_products = carbon_get_post_meta($product_id, 'edd_product');
 
-        if(is_array($courses) && 0 < count($courses)) :
+        if(is_array($edd_products) && 0 < count($edd_products)) :
 
-            $product->learnpress = array();
+            $product->edd_products = array();
 
-            foreach($courses as $course) :
-                $product->learnpress[] = $course['id'];
+            foreach($edd_products as $edd_product) :
+                $product->edd_products[] = $edd_product['id'];
             endforeach;
 
         endif;

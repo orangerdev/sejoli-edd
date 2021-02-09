@@ -113,6 +113,7 @@ class Sejoli_EDD {
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-sejoli-edd-order.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-sejoli-edd-product.php';
 
 		$this->loader = new Sejoli_EDD_Loader();
@@ -145,9 +146,21 @@ class Sejoli_EDD {
 	 */
 	private function define_admin_hooks() {
 
+		$order = new Sejoli_EDD\Admin\Order( $this->get_plugin_name(), $this->get_version() );
+
+		$this->loader->add_action( 'sejoli/order/meta-data',					$order, 'set_order_metadata',	1222, 2);
+		$this->loader->add_action( 'sejoli/order/set-status/completed',			$order, 'create_edd_order',		1222);
+		$this->loader->add_filter( 'sejoli/order/set-status/on-hold',			$order, 'cancel_edd_order',  	1222);
+		$this->loader->add_filter( 'sejoli/order/set-status/cancelled',			$order, 'cancel_edd_order',		1222);
+		$this->loader->add_filter( 'sejoli/order/set-status/refunded',			$order, 'cancel_edd_order',		1222);
+		$this->loader->add_filter( 'sejoli/order/set-status/in-progress',		$order, 'cancel_edd_order',		1222);
+		$this->loader->add_filter( 'sejoli/order/set-status/shipped',			$order, 'cancel_edd_order',		1222);
+
 		$product = new Sejoli_EDD\Admin\Product( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'sejoli/product/fields',		$product, 'set_product_fields', 12);
+		$this->loader->add_action( 'sejoli/product/fields',		$product, 'set_product_fields', 	12);
+		$this->loader->add_filter( 'sejoli/product/meta-data',	$product, 'set_product_metadata', 	1222, 2);
+		$this->loader->add_filter( 'sejoli/order/set-status/completed',			$order, 'create_learnpress_order',  200);
 
 	}
 
