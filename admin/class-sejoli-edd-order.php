@@ -1,8 +1,6 @@
 <?php
-namespace Sejoli_EDD\Admin;
 
-use Carbon_Fields\Container;
-use Carbon_Fields\Field;
+namespace Sejoli_EDD\Admin;
 
 /**
  * The admin-specific functionality of the plugin.
@@ -63,101 +61,7 @@ class Order {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
-        add_action( 'admin_init', array($this, 'test') );
 	}
-
-    public function test() {
-
-        if( isset($_GET['dylan-edd']) ) :
-
-            $download_id = absint( $_GET['dylan-edd']);
-
-            __print_debug( $download_id );
-
-            $quantity      = 1;
-            $price_options = array();
-        	$price         = edd_get_download_price( $download_id );
-
-        	// Set up Downloads array
-        	$downloads = array(
-        		array(
-        			'id'      => $download_id,
-        			'options' => $price_options
-        		)
-        	);
-
-            // Set up Cart Details array
-        	$cart_details = array(
-        		array(
-        			'name'        => get_the_title( $download_id ),
-        			'id'          => $download_id,
-        			'item_number' => array(
-        				'id'      => $download_id,
-        				'options' => $price_options
-        			),
-        			'tax'         => 0,
-        			'discount'    => 0,
-        			'item_price'  => $price,
-        			'subtotal'    => ( $price * $quantity ),
-        			'price'       => ( $price * $quantity ),
-        			'quantity'    => $quantity,
-        		)
-        	);
-
-            $current_user = wp_get_current_user();
-
-            // Setup user information
-        	$user_info = array(
-        		'id'         => is_user_logged_in() ? get_current_user_id()         : -1,
-        		'email'      => is_user_logged_in() ? $current_user->user_email     : '',
-        		'first_name' => is_user_logged_in() ? $current_user->user_firstname : '',
-        		'last_name'  => is_user_logged_in() ? $current_user->user_lastname  : '',
-        		'discount'   => 'none',
-        		'address'    => array()
-        	);
-
-        	// Setup purchase information
-        	$purchase_data = array(
-        		'downloads'    => $downloads,
-        		'fees'         => edd_get_cart_fees(),
-        		'subtotal'     => $price * $quantity,
-        		'discount'     => 0,
-        		'tax'          => 0,
-        		'price'        => $price * $quantity,
-        		'purchase_key' => strtolower( md5( uniqid() ) ),
-        		'user_email'   => $user_info['email'],
-        		'date'         => date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
-        		'user_info'    => $user_info,
-        		'post_data'    => array(),
-        		'cart_details' => $cart_details,
-        		'gateway'      => 'manual',
-        		'buy_now'      => true,
-        		'card_info'    => array()
-        	);
-
-            edd_set_purchase_session( $purchase_data );
-
-            $payment_data = array(
-        		'price'        => $purchase_data['price'],
-        		'date'         => $purchase_data['date'],
-        		'user_email'   => $purchase_data['user_email'],
-        		'purchase_key' => $purchase_data['purchase_key'],
-        		'currency'     => edd_get_currency(),
-        		'downloads'    => $purchase_data['downloads'],
-        		'user_info'    => $purchase_data['user_info'],
-        		'cart_details' => $purchase_data['cart_details'],
-        		'status'       => 'pending',
-        	);
-
-        	// Record the pending payment
-        	$payment = edd_insert_payment( $payment_data );
-
-            edd_update_payment_status( $payment, 'publish' );
-
-            exit;
-
-        endif;
-    }
 
     /**
      * Set edd metadata to order
@@ -272,13 +176,15 @@ class Order {
         	);
 
         	// Record the pending payment
-        	$payment = edd_insert_payment( $payment_data );
+        	$payment_id = edd_insert_payment( $payment_data );
 
-            edd_update_payment_status( $payment, 'publish' );
+            edd_update_payment_status( $payment_id, 'publish' );
 
-            $order_data['meta_data']['edd_order'] = $payment;
+            $order_data['meta_data']['edd_order'] = $payment_id;
 
             sejolisa_update_order_meta_data($order_data['ID'], $order_data['meta_data']);
+
+			update_post_meta( $payment_id, '_sejoli_order_id', $order_data['ID'] );
 
 		elseif(isset($order_data['meta_data']['edd_order'])) :
 

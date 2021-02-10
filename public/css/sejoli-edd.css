@@ -1,0 +1,16 @@
+.edd-table {
+    width: 100%;
+}
+
+.edd-table .edd_purchase_receipt_product_name {
+    padding: 8px;
+    background-color: #eee;
+}
+
+.edd-table .edd_purchase_receipt_files {
+
+}
+
+.edd-table .edd_purchase_receipt_files .edd_download_file {
+
+}

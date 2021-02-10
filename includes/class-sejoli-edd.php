@@ -77,7 +77,8 @@ class Sejoli_EDD {
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
-
+		$this->define_public_hooks();
+		$this->define_json_hooks();
 	}
 
 	/**
@@ -115,6 +116,17 @@ class Sejoli_EDD {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-sejoli-edd-order.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-sejoli-edd-product.php';
+
+		/**
+		 * The class responsible for defining all actions that require JSON data return.
+		 */
+		 require_once plugin_dir_path( dirname( __FILE__ ) ) . 'json/main.php';
+		 require_once plugin_dir_path( dirname( __FILE__ ) ) . 'json/edd.php';
+
+		/**
+		 * The class responsible for defining all actions that occur in the member area.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-sejoli-edd-member.php';
 
 		$this->loader = new Sejoli_EDD_Loader();
 
@@ -160,8 +172,37 @@ class Sejoli_EDD {
 
 		$this->loader->add_action( 'sejoli/product/fields',		$product, 'set_product_fields', 	12);
 		$this->loader->add_filter( 'sejoli/product/meta-data',	$product, 'set_product_metadata', 	1222, 2);
-		$this->loader->add_filter( 'sejoli/order/set-status/completed',			$order, 'create_learnpress_order',  200);
 
+	}
+
+	/**
+	 * Register all of the hooks related to the front area functionality
+	 * of the plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	private function define_public_hooks() {
+
+		$member = new Sejoli_EDD\Front\Member( $this->get_plugin_name(), $this->get_version() );
+
+		$this->loader->add_action( 'wp_enqueue_scripts',	$member, 'enqueue_scripts',		 1999);
+		$this->loader->add_filter( 'edd_template_paths', 	$member, 'set_edd_template_dir', 11, 2);
+
+	}
+
+	/**
+	 * Register all-related with JSON returning data
+	 *
+	 * @since 	1.0.0
+	 * @access   private
+	 */
+	private function define_json_hooks() {
+
+		$edd = new Sejoli_EDD\JSON\EDD();
+
+		$this->loader->add_action( 'sejoli_ajax_get-user-purchase-history', 	$edd, 'get_user_purchase_history', 1);
+		$this->loader->add_action( 'sejoli_ajax_get-purchase-detail',			$edd, 'get_purchase_detail',	   1);
 	}
 
 	/**
