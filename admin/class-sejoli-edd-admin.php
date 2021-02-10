@@ -2,6 +2,9 @@
 
 namespace Sejoli_EDD;
 
+use Carbon_Fields\Container;
+use Carbon_Fields\Field;
+
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -76,13 +79,13 @@ class Admin {
                     ->set_default_value(true)
                     ->set_help_text( __('Dengan menonaktifkan penjualan produk EDD, maka semua penjualan akan menggunakan sistem dari sejoli', 'sejoli')),
 
-                Field::make('checkbox', 'edd_disable_email_notification', __('Nonaktifkan semua notifikasi yang berasalah dari EDD', 'sejoli'))
+                Field::make('checkbox', 'edd_disable_email_notification', __('Nonaktifkan semua notifikasi yang berasal dari EDD', 'sejoli'))
                     ->set_default_value(true)
-                    ->set_help_text( __('Dengan menonaktifkan penjualan produk EDD, maka semua penjualan akan menggunakan sistem dari sejoli', 'sejoli')),
+                    ->set_help_text( __('Dengan menonaktifkan notifikasi dari EDD, maka user tidak akan menerima lagi email terkait receipt yang berasalah dari EDD. Hal ini untuk mencegah email yang dikirim terlalu banyak', 'sejoli')),
             )
-        )
+        );
 
-        return $field;
+        return $fields;
 
     }
 }

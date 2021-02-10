@@ -11,15 +11,6 @@ Class EDD extends \Sejoli_EDD\JSON
     }
 
     /**
-     * Get user purchase detail
-     * @since   1.0.0
-     * @return  json
-     */
-    public function get_user_purchase_history() {
-
-    }
-
-    /**
      * Get single purchase details
      * @since   1.0.0
      * @return  string

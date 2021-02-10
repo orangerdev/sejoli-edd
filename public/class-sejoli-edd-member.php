@@ -93,4 +93,32 @@ class Member {
 
 	}
 
+	/**
+	 * Block all access to default EDD pages
+	 * Hooked via action template_redirect, priority 1
+	 * @since 	1.0.0
+	 * @return 	void
+	 */
+	public function block_edd_pages() {
+
+		$block = boolval( carbon_get_theme_option('edd_disable_product_checkout') );
+		$edd_pages = array();
+
+		$edd_pages[] = edd_get_option( 'success_page' );
+		$edd_pages[] = edd_get_option( 'failure_page' );
+
+		if(
+			false !== $block &&
+			(
+				is_singular(EDD_CPT) ||
+				edd_is_checkout() ||
+				is_page( $edd_pages )
+			)
+		) :
+			wp_redirect(home_url());
+			exit;
+
+		endif;
+	}
+
 }

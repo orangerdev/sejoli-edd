@@ -114,6 +114,7 @@ class Sejoli_EDD {
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-sejoli-edd-admin.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-sejoli-edd-order.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-sejoli-edd-product.php';
 
@@ -158,6 +159,10 @@ class Sejoli_EDD {
 	 */
 	private function define_admin_hooks() {
 
+		$admin = new Sejoli_EDD\Admin( $this->get_plugin_name(), $this->get_version() );
+
+		$this->loader->add_filter( 'sejoli/general/fields',		$admin, 'set_plugin_options', 666);
+
 		$order = new Sejoli_EDD\Admin\Order( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'sejoli/order/meta-data',					$order, 'set_order_metadata',	1222, 2);
@@ -188,6 +193,7 @@ class Sejoli_EDD {
 
 		$this->loader->add_action( 'wp_enqueue_scripts',	$member, 'enqueue_scripts',		 1999);
 		$this->loader->add_filter( 'edd_template_paths', 	$member, 'set_edd_template_dir', 11, 2);
+		$this->loader->add_action( 'template_redirect',		$member, 'block_edd_pages',		 1);
 
 	}
 
@@ -201,7 +207,6 @@ class Sejoli_EDD {
 
 		$edd = new Sejoli_EDD\JSON\EDD();
 
-		$this->loader->add_action( 'sejoli_ajax_get-user-purchase-history', 	$edd, 'get_user_purchase_history', 1);
 		$this->loader->add_action( 'sejoli_ajax_get-purchase-detail',			$edd, 'get_purchase_detail',	   1);
 	}
 
