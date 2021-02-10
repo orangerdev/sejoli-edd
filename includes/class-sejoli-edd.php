@@ -165,13 +165,14 @@ class Sejoli_EDD {
 
 		$order = new Sejoli_EDD\Admin\Order( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'sejoli/order/meta-data',					$order, 'set_order_metadata',	1222, 2);
-		$this->loader->add_action( 'sejoli/order/set-status/completed',			$order, 'create_edd_order',		1222);
-		$this->loader->add_filter( 'sejoli/order/set-status/on-hold',			$order, 'cancel_edd_order',  	1222);
-		$this->loader->add_filter( 'sejoli/order/set-status/cancelled',			$order, 'cancel_edd_order',		1222);
-		$this->loader->add_filter( 'sejoli/order/set-status/refunded',			$order, 'cancel_edd_order',		1222);
-		$this->loader->add_filter( 'sejoli/order/set-status/in-progress',		$order, 'cancel_edd_order',		1222);
-		$this->loader->add_filter( 'sejoli/order/set-status/shipped',			$order, 'cancel_edd_order',		1222);
+		$this->loader->add_action( 'sejoli/order/meta-data',				$order, 'set_order_metadata',	1222, 2);
+		$this->loader->add_action( 'sejoli/order/set-status/completed',		$order, 'create_edd_order',		1222);
+		$this->loader->add_filter( 'sejoli/order/set-status/on-hold',		$order, 'cancel_edd_order',  	1222);
+		$this->loader->add_filter( 'sejoli/order/set-status/cancelled',		$order, 'cancel_edd_order',		1222);
+		$this->loader->add_filter( 'sejoli/order/set-status/refunded',		$order, 'cancel_edd_order',		1222);
+		$this->loader->add_filter( 'sejoli/order/set-status/in-progress',	$order, 'cancel_edd_order',		1222);
+		$this->loader->add_filter( 'sejoli/order/set-status/shipped',		$order, 'cancel_edd_order',		1222);
+		$this->loader->add_action( 'init',									$order, 'disable_email', 		999);
 
 		$product = new Sejoli_EDD\Admin\Product( $this->get_plugin_name(), $this->get_version() );
 

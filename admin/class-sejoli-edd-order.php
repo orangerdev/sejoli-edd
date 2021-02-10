@@ -81,7 +81,8 @@ class Order {
 
         return $metadata;
     }
-    /**
+
+	/**
      * Create edd order when sejoli order completed
      * Hooked via sejoli/order/set-status/completed, prioirty 1222
      * @since   1.0.0
@@ -212,4 +213,21 @@ class Order {
         endif;
 
     }
+
+	/**
+	 * Check if need to disable email after complete purchase
+	 * Hooked via action init, priority 998
+	 * @since 	1.0.0
+	 * @return 	void
+	 */
+	public function disable_email() {
+
+		if( false !== boolval( carbon_get_theme_option( 'edd_disable_email_notification' ) ) ) :
+
+			remove_action( 'edd_complete_purchase', 'edd_trigger_purchase_receipt', 999 );
+			remove_action( 'edd_admin_sale_notice', 'edd_admin_email_notice', 10 );
+
+		endif;
+
+	}
 }
