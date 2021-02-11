@@ -1,6 +1,6 @@
 <?php if( ! empty( $_GET['edd-verify-success'] ) ) : ?>
 <p class="edd-account-verified edd_success">
-	<?php _e( 'Your account has been successfully verified!', 'easy-digital-downloads' ); ?>
+	<?php _e( 'Your account has been successfully verified!', 'sejoli-edd' ); ?>
 </p>
 <?php
 endif;
@@ -21,8 +21,9 @@ if ( is_user_logged_in() ):
 			<thead>
 				<tr class="edd_purchase_row">
 					<?php do_action('edd_purchase_history_header_before'); ?>
-					<th class="edd_purchase_id" style="width:100px;"><?php _e('ID','easy-digital-downloads' ); ?></th>
-					<th class="edd_purchase_details"><?php _e('Details','easy-digital-downloads' ); ?></th>
+					<th class="edd_purchase_id" style="width:100px;"><?php _e('ID','sejoli-edd' ); ?></th>
+					<th class="edd_purchase_item"><?php _e('Item', 'sejoli-edd'); ?></th>
+					<th class="edd_purchase_details"><?php _e('Details','sejoli-edd' ); ?></th>
 					<?php do_action('edd_purchase_history_header_after'); ?>
 				</tr>
 			</thead>
@@ -41,7 +42,7 @@ if ( is_user_logged_in() ):
 		<?php do_action( 'edd_after_purchase_history', $payments ); ?>
 		<?php wp_reset_postdata(); ?>
 	<?php else : ?>
-		<p class="edd-no-purchases"><?php _e('Belum ada data','easy-digital-downloads' ); ?></p>
+		<p class="edd-no-purchases"><?php _e('Belum ada data','sejoli-edd' ); ?></p>
 	<?php endif;
 
 ?></div><!-- END #sejoli-edd-table-holder --><?php
