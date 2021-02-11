@@ -16,7 +16,7 @@
  * Plugin Name:       Sejoli - EDD
  * Plugin URI:        https://sejoli.co.id
  * Description:       Integrates Sejoli premium membership WordPress plugin with Easy Digital Downloads ( EDD )
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            Sejoli
  * Author URI:        https://sejoli.co.id
  * License:           GPL-2.0+
@@ -66,7 +66,7 @@ else :
 	 * Start at version 1.0.0 and use SemVer - https://semver.org
 	 * Rename this for your plugin and update it as you release new versions.
 	 */
-	define( 'SEJOLI_EDD_VERSION', 	'1.0.0' );
+	define( 'SEJOLI_EDD_VERSION', 	'1.0.1' );
 	define( 'SEJOLI_EDD_PATH',		plugin_dir_path( __FILE__ ) );
 	define( 'SEJOLI_EDD_URL',		plugin_dir_url( __FILE__ ) );
 	define( 'EDD_CPT',				'download');
