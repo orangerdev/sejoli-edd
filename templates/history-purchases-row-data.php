@@ -1,4 +1,9 @@
 <?php
+require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+    
+$plugin_dir  = WP_PLUGIN_DIR . '/easy-digital-downloads/easy-digital-downloads.php';
+$plugin_data = get_plugin_data( $plugin_dir );
+
 foreach ( $payments as $payment ) :
 
     $payment         = new EDD_Payment( $payment->ID );
@@ -25,6 +30,7 @@ foreach ( $payments as $payment ) :
 
         <td class="edd_purchase_details">
         <?php
+        if($plugin_data['Version'] <= '2.11.7') :
             if( 'publish' !== $payment->status ) :
                 _e('Order belum selesai', 'sejoli');
             else:
@@ -34,6 +40,17 @@ foreach ( $payments as $payment ) :
                 </a>
                 <?php
             endif;
+        else:
+            if( 'complete' !== $payment->status ) :
+                _e('Order belum selesai', 'sejoli');
+            else:
+                ?>
+                <a href="#" class='edd-view-purchase' data-payment-key="<?php echo $payment->key; ?>">
+                    <?php _e( 'View Details and Downloads', 'sejoli-edd' ); ?>
+                </a>
+                <?php
+            endif;
+        endif;
         ?>
         </td>
         <?php do_action( 'edd_purchase_history_row_end', $payment->ID, $payment->payment_meta ); ?>

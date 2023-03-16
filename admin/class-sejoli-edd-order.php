@@ -103,6 +103,7 @@ class Order {
             $quantity     = 1;
             $cart_details = $downloads = array();
             $price_total  = 0;
+            $product      = sejolisa_get_product($order_data['product_id']);
 
             foreach( $edd_products as $download_id ) :
 
