@@ -149,4 +149,6 @@ endif;
 	</div>
 </div>
 
+<div class="edd-alert-holder"></div>
+
 <?php endif; ?>
