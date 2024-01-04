@@ -19,6 +19,11 @@ e.g.
 1. Upload `sejoli-edd.zip` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 
+= 1.0.2 =
+03 January 2024
+* Fix error notice in popup details purchase
+* Add error handler in ajax process
+
 = 1.0.1 =
 11 February 2021
 * Display download name in purchase history

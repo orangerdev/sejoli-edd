@@ -16,20 +16,21 @@ if( empty( $payment ) ) : ?>
 return;
 endif;
 
-$meta            = edd_get_payment_meta( $payment->ID );
-$cart            = edd_get_payment_meta_cart_details( $payment->ID, true );
-$user            = edd_get_payment_meta_user_info( $payment->ID );
-$email           = edd_get_payment_user_email( $payment->ID );
-$status          = edd_get_payment_status( $payment, true );
-$sejoli_order_id = absint( get_post_meta( $payment->ID, '_sejoli_order_id', true) );
-$order_id        = ( 0 < $sejoli_order_id ) ? '#'.$sejoli_order_id : '#EDD-'. $payment->ID;
-
+$meta               = edd_get_payment_meta( $payment->ID );
+$cart               = edd_get_payment_meta_cart_details( $payment->ID, true );
+$user               = edd_get_payment_meta_user_info( $payment->ID );
+$email              = edd_get_payment_user_email( $payment->ID );
+$status             = edd_get_payment_status( $payment, true );
+$sejoli_order_id    = absint( get_post_meta( $payment->ID, '_sejoli_order_id', true) );
+$order_id           = ( 0 < $sejoli_order_id ) ? '#'.$sejoli_order_id : '#EDD-'. $payment->ID;
+$payment_id         = isset($edd_receipt_args['payment_id']) ? $edd_receipt_args['payment_id'] : null;
+$receipt_args_notes = isset($edd_receipt_args['notes']) ? $edd_receipt_args['notes'] : null;
 ?>
 <table id="edd_purchase_receipt" class="edd-table">
 	<thead>
 		<?php do_action( 'edd_payment_receipt_before', $payment, $edd_receipt_args ); ?>
 
-		<?php if ( filter_var( $edd_receipt_args['payment_id'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
+		<?php if ( filter_var( $payment_id, FILTER_VALIDATE_BOOLEAN ) ) : ?>
 		<tr>
 			<th><strong><?php _e( 'Order', 'sejoli-edd' ); ?>:</strong></th>
 			<th><?php echo $order_id; ?></th>
@@ -79,7 +80,7 @@ $order_id        = ( 0 < $sejoli_order_id ) ? '#'.$sejoli_order_id : '#EDD-'. $p
 
 						<?php
 						$notes = edd_get_product_notes( $item['id'] );
-						if ( $edd_receipt_args['notes'] && ! empty( $notes ) ) : ?>
+						if ( $receipt_args_notes && ! empty( $notes ) ) : ?>
 							<div class="edd_purchase_receipt_product_notes"><?php echo wp_kses_post( wpautop( $notes ) ); ?></div>
 						<?php endif; ?>
 
